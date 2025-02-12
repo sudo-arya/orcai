@@ -4,6 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node server.js",
+  "install-client": "cd .. && npm install",
+  "build-client": "cd .. && npm run build",
+  "deploy": "npm run install-client && npm run build-client && node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

@@ -61,7 +61,7 @@ export default function RegistrationScreen() {
         <span className="ml-2">Smoking</span>
       </label>
       <label className="inline-flex items-center ml-3">
-        <input type="checkbox" onChange={() => handleCheckbox("Tobacco Use")} />
+        <input type="checkbox" onChange={() => handleCheckbox("Tobacco")} />
         <span className="ml-2">Tobacco</span>
       </label>
       <label className="inline-flex items-center ml-3">

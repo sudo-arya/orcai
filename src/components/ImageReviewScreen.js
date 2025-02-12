@@ -1,15 +1,17 @@
 import { useState, useRef } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import Webcam from "react-webcam";
 import { UserContext } from "./UserContext";
 import { useContext } from "react";
 
-
 export default function ImageReviewScreen({ images, setImages }) {
-//   const navigate = useNavigate();
   const webcamRef = useRef(null);
   const { userData } = useContext(UserContext);
+  const navigate = useNavigate(); // Initialize navigate function
   const [recaptureSection, setRecaptureSection] = useState(null);
+  const [uploadStatus, setUploadStatus] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [analyzing, setAnalyzing] = useState(false);
 
   const sections = [
     "Labial Mucosa",
@@ -26,18 +28,16 @@ export default function ImageReviewScreen({ images, setImages }) {
     setRecaptureSection(null);
   };
 
-  const [uploadStatus, setUploadStatus] = useState(""); // ✅ Move useState outside
   const uploadImages = async () => {
-    setUploadStatus("Uploading images... Please wait."); // ✅ Update status
+    setLoading(true); // Show loading screen
+    setUploadStatus("Uploading images... Please wait.");
 
     const formData = new FormData();
     formData.append("user_name", userData?.name || "Test User");
-formData.append("age", userData?.age || "25");
-formData.append("gender", userData?.gender || 'Male');
-formData.append("habits", userData?.habits || "None");
+    formData.append("age", userData?.age || "25");
+    formData.append("gender", userData?.gender || "Male");
+    formData.append("habits", userData?.habits || "None");
 
-
-    // Convert Base64 images to Blob and add to FormData
     await Promise.all(
       Object.entries(images).map(([section, image], index) =>
         fetch(image)
@@ -59,22 +59,37 @@ formData.append("habits", userData?.habits || "None");
 
       if (response.ok) {
         setUploadStatus("✅ Images uploaded successfully!");
-        console.log("Upload Response:", data);
+        setLoading(false);
+        setAnalyzing(true);
+
+        setTimeout(() => {
+          setAnalyzing(false);
+          navigate("/results"); // Redirect user after analysis
+        }, 4000); // Wait for 4 seconds
       } else {
         setUploadStatus("❌ Failed to upload images. Please try again.");
+        setLoading(false);
       }
     } catch (error) {
       console.error("Upload Error:", error);
       setUploadStatus("❌ Error uploading images. Check your internet connection.");
+      setLoading(false);
     }
   };
 
-
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
-      <h2 className="text-2xl font-bold text-center mb-4 text-blue-600">Review Captured Images</h2>
-
-      {recaptureSection ? (
+    <div className="p-6 bg-gray-100 min-h-screen flex flex-col justify-center items-center">
+      {loading ? (
+        <div className="text-center p-6 bg-white rounded-lg shadow-lg">
+          <p className="text-lg font-semibold">{uploadStatus}</p>
+          <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mt-4"></div>
+        </div>
+      ) : analyzing ? (
+        <div className="text-center p-6 bg-white rounded-lg shadow-lg">
+          <p className="text-lg font-semibold">🔍 Analyzing using AI...</p>
+          <div className="w-12 h-12 border-4 border-green-500 border-t-transparent rounded-full animate-spin mx-auto mt-4"></div>
+        </div>
+      ) : recaptureSection ? (
         <div className="text-center">
           <h3 className="text-lg font-semibold mb-2">Re-capturing: {recaptureSection}</h3>
           <Webcam ref={webcamRef} screenshotFormat="image/jpeg" className="w-80 h-80 border rounded shadow-lg mx-auto" />
@@ -95,15 +110,12 @@ formData.append("habits", userData?.habits || "None");
           ))}
         </div>
       )}
-{uploadStatus && <p className="text-center text-lg font-semibold mt-4">{uploadStatus}</p>}
 
-      {!recaptureSection && <button
-  className="bg-green-500 text-white px-5 py-2 mt-6 rounded-lg shadow hover:bg-green-600"
-  onClick={uploadImages} // Call upload function
->
-  Upload & Finish
-</button>
-}
+      {!recaptureSection && !loading && !analyzing && (
+        <button className="bg-green-500 text-white px-5 py-2 mt-6 rounded-lg shadow hover:bg-green-600" onClick={uploadImages}>
+          Upload & Finish
+        </button>
+      )}
     </div>
   );
 }
