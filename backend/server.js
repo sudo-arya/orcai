@@ -9,7 +9,7 @@ const path = require("path"); // ✅ Add this line
 require("dotenv").config();
 
 const app = express();
-app.use(cors({ origin: "https://orcai.onrender.com" }));
+app.use(cors({ origin: "*" }));
 
 app.use(express.json());
 
