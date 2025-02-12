@@ -9,7 +9,8 @@ const path = require("path"); // ✅ Add this line
 require("dotenv").config();
 
 const app = express();
-app.use(cors({ origin: "*" })); // Or use your frontend URL instead of "*"
+app.use(cors({ origin: "https://orcai.onrender.com" }));
+
 app.use(express.json());
 
 // Serve React frontend

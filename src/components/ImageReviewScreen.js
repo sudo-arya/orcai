@@ -50,10 +50,13 @@ export default function ImageReviewScreen({ images, setImages }) {
     );
 
     try {
-      const response = await fetch("http://localhost:5000/upload", {
-        method: "POST",
-        body: formData,
-      });
+      const backendURL = "https://orcai.onrender.com"; // Replace with actual Render URL
+
+const response = await fetch(`${backendURL}/upload`, {
+  method: "POST",
+  body: formData,
+});
+
 
       const data = await response.json();
 
