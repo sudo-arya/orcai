@@ -4,6 +4,8 @@ const mysql = require("mysql2");
 const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
 const fs = require("fs");
+const path = require("path"); // ✅ Add this line
+
 require("dotenv").config();
 
 const app = express();
@@ -11,10 +13,10 @@ app.use(cors());
 app.use(express.json());
 
 // Serve React frontend
-app.use(express.static(path.join(__dirname, "../../build")));  // Serve React from the build folder
+app.use(express.static(path.join(__dirname, "..", "build")));
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../../build", "index.html"));
+  res.sendFile(path.join(__dirname, "..", "build", "index.html"));
 });
 
 
