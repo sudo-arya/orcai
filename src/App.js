@@ -1,25 +1,22 @@
 import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import HomeScreen from "./components/HomeScreen";
+import RegistrationScreen from "./components/RegistrationScreen";
+import ImageCaptureScreen from "./components/ImageCaptureScreen";
+import ImageReviewScreen from "./components/ImageReviewScreen";
+import { useState } from "react";
 
-function App() {
+export default function App() {
+  const [images, setImages] = useState({});
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomeScreen />} />
+        <Route path="/register" element={<RegistrationScreen />} />
+        <Route path="/capture" element={<ImageCaptureScreen images={images} setImages={setImages} />} />
+        <Route path="/review" element={<ImageReviewScreen images={images} setImages={setImages} />} />
+      </Routes>
+    </Router>
   );
 }
-
-export default App;
