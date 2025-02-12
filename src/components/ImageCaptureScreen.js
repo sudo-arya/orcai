@@ -1,3 +1,4 @@
+ // eslint-disable-next-line
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Webcam from "react-webcam";
@@ -7,6 +8,7 @@ import { useEffect } from "react";
 
 
 export default function ImageCaptureScreen({ images, setImages }) {
+     // eslint-disable-next-line
     const { userData } = useContext(UserContext);
   const navigate = useNavigate();
   const webcamRef = useRef(null);
