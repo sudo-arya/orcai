@@ -6,10 +6,12 @@ import RegistrationScreen from "./components/RegistrationScreen";
 import ImageCaptureScreen from "./components/ImageCaptureScreen";
 import ImageReviewScreen from "./components/ImageReviewScreen";
 import { useState } from "react";
+import { UserProvider } from "./components/UserContext";
 
 export default function App() {
   const [images, setImages] = useState({});
   return (
+    <UserProvider>
     <Router>
       <Routes>
         <Route path="/" element={<HomeScreen />} />
@@ -18,5 +20,6 @@ export default function App() {
         <Route path="/review" element={<ImageReviewScreen images={images} setImages={setImages} />} />
       </Routes>
     </Router>
+    </UserProvider>
   );
 }

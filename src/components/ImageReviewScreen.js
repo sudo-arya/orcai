@@ -1,10 +1,14 @@
 import { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import Webcam from "react-webcam";
+import { UserContext } from "./UserContext";
+import { useContext } from "react";
+
 
 export default function ImageReviewScreen({ images, setImages }) {
-  const navigate = useNavigate();
+//   const navigate = useNavigate();
   const webcamRef = useRef(null);
+  const { userData } = useContext(UserContext);
   const [recaptureSection, setRecaptureSection] = useState(null);
 
   const sections = [
@@ -21,6 +25,50 @@ export default function ImageReviewScreen({ images, setImages }) {
     setImages((prev) => ({ ...prev, [recaptureSection]: imageSrc }));
     setRecaptureSection(null);
   };
+
+  const [uploadStatus, setUploadStatus] = useState(""); // ✅ Move useState outside
+  const uploadImages = async () => {
+    setUploadStatus("Uploading images... Please wait."); // ✅ Update status
+
+    const formData = new FormData();
+    formData.append("user_name", userData?.name || "Test User");
+formData.append("age", userData?.age || "25");
+formData.append("gender", userData?.gender || 'Male');
+formData.append("habits", userData?.habits || "None");
+
+
+    // Convert Base64 images to Blob and add to FormData
+    await Promise.all(
+      Object.entries(images).map(([section, image], index) =>
+        fetch(image)
+          .then((res) => res.blob())
+          .then((blob) => {
+            formData.append("images", new File([blob], `image_${index}.jpg`, { type: "image/jpeg" }));
+          })
+          .catch((error) => console.error("Error converting image:", error))
+      )
+    );
+
+    try {
+      const response = await fetch("http://localhost:5000/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setUploadStatus("✅ Images uploaded successfully!");
+        console.log("Upload Response:", data);
+      } else {
+        setUploadStatus("❌ Failed to upload images. Please try again.");
+      }
+    } catch (error) {
+      console.error("Upload Error:", error);
+      setUploadStatus("❌ Error uploading images. Check your internet connection.");
+    }
+  };
+
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
@@ -47,8 +95,15 @@ export default function ImageReviewScreen({ images, setImages }) {
           ))}
         </div>
       )}
+{uploadStatus && <p className="text-center text-lg font-semibold mt-4">{uploadStatus}</p>}
 
-      {!recaptureSection && <button className="bg-green-500 text-white px-5 py-2 mt-6 rounded-lg shadow hover:bg-green-600" onClick={() => navigate("/")}>Finish</button>}
+      {!recaptureSection && <button
+  className="bg-green-500 text-white px-5 py-2 mt-6 rounded-lg shadow hover:bg-green-600"
+  onClick={uploadImages} // Call upload function
+>
+  Upload & Finish
+</button>
+}
     </div>
   );
 }
