@@ -7,7 +7,7 @@
     "start": "node server.js",
   "install-client": "cd .. && npm install",
   "build-client": "cd .. && npm run build",
-  "deploy": "npm run install-client && npm run build-client && node server.js",
+  "deploy": "npm run install-client && npm run build-client",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
