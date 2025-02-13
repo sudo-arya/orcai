@@ -21,7 +21,7 @@ export default function HomeScreen() {
         <div className="mt-6 flex flex-col space-y-4 w-64">
           <button
             className="px-6 py-3 bg-blue-60 bg-[#2189c6] text-white rounded-lg text-lg shadow-lg transition transform hover:scale-105"
-            onClick={() => navigate("/scan")}
+            onClick={() => navigate("/register")}
           >
             Scan Now
           </button>

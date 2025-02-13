@@ -23,15 +23,22 @@ export default function RegistrationScreen() {
   };
 
   return (
-    <div className="h-screen flex flex-col justify-center items-center bg-gray-100">
-  <div className="bg-white p-6 rounded-lg shadow-lg w-80">
-    <h2 className="text-xl font-semibold text-center mb-4">Patient Registration</h2>
+    <div
+  className="h-screen flex flex-col items-center justify-center bg-blue-100 bg-repeat"
+  style={{
+    backgroundImage:
+      "url('https://thumbs.dreamstime.com/b/dentist-orthodontics-blue-seamless-pattern-line-icons-dental-care-medical-equipment-braces-tooth-prosthesis-floss-caries-120849082.jpg')",
+    backgroundSize: "350px 350px",
+  }}
+>
+  <div className="bg-white bg-opacity-90 p-8 rounded-lg shadow-xl text-center w-80">
+    <h2 className="text-2xl font-bold mb-4 text-[#2189c6]">Patient Registration</h2>
 
     <input
       type="text"
       name="name"
       placeholder="Full Name"
-      className="w-full p-2 mb-3 border rounded"
+      className="w-full p-3 mb-3 border rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-[#2189c6]"
       onChange={handleChange}
     />
 
@@ -39,13 +46,13 @@ export default function RegistrationScreen() {
       type="number"
       name="age"
       placeholder="Age"
-      className="w-full p-2 mb-3 border rounded"
+      className="w-full p-3 mb-3 border rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-[#2189c6]"
       onChange={handleChange}
     />
 
     <select
       name="gender"
-      className="w-full p-2 mb-3 border rounded"
+      className="w-full p-3 mb-3 border rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-[#2189c6]"
       onChange={handleChange}
     >
       <option value="">Select Gender</option>
@@ -54,39 +61,21 @@ export default function RegistrationScreen() {
       <option value="Other">Other</option>
     </select>
 
-    {/* <div className="mb-4">
-      <label className="block font-medium">Habits:</label>
-      <label className="inline-flex items-center mt-2">
-        <input type="checkbox" onChange={() => handleCheckbox("Smoking")} />
-        <span className="ml-2">Smoking</span>
-      </label>
-      <label className="inline-flex items-center ml-3">
-        <input type="checkbox" onChange={() => handleCheckbox("Tobacco")} />
-        <span className="ml-2">Tobacco</span>
-      </label>
-      <label className="inline-flex items-center ml-3">
-        <input type="checkbox" onChange={() => handleCheckbox("Alcohol")} />
-        <span className="ml-2">Alcohol</span>
-      </label>
-    </div> */}
-
     {/* User Consent Checkbox */}
-    <div className="mb-4">
-      <label className="inline-flex items-center">
-        <input
-          type="checkbox"
-          checked={consent}
-          onChange={() => setConsent(!consent)}
-          className="mr-2"
-        />
-        <span className="text-sm text-gray-700">
-          I consent to the collection of my personal and health data.
-        </span>
-      </label>
+    <div className="mb-4 flex items-center text-left">
+      <input
+        type="checkbox"
+        checked={consent}
+        onChange={() => setConsent(!consent)}
+        className="mr-2 w-4 h-4"
+      />
+      <span className="text-sm text-gray-700">
+        I consent to the collection of my personal and health data.
+      </span>
     </div>
 
     <button
-      className={`w-full px-4 py-2 rounded shadow ${consent ? 'bg-blue-500 hover:bg-blue-600 text-white' : 'bg-gray-400 cursor-not-allowed'}`}
+      className={`w-full px-4 py-3 rounded-lg text-white text-lg shadow-lg transition transform hover:scale-105 ${consent ? 'bg-[#2189c6] hover:bg-blue-700' : 'bg-gray-400 cursor-not-allowed'}`}
       onClick={() => navigate("/capture")}
       disabled={!consent}
     >
@@ -94,6 +83,7 @@ export default function RegistrationScreen() {
     </button>
   </div>
 </div>
+
 
   );
 }
