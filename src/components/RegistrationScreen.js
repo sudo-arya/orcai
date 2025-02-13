@@ -54,7 +54,7 @@ export default function RegistrationScreen() {
       <option value="Other">Other</option>
     </select>
 
-    <div className="mb-4">
+    {/* <div className="mb-4">
       <label className="block font-medium">Habits:</label>
       <label className="inline-flex items-center mt-2">
         <input type="checkbox" onChange={() => handleCheckbox("Smoking")} />
@@ -68,7 +68,7 @@ export default function RegistrationScreen() {
         <input type="checkbox" onChange={() => handleCheckbox("Alcohol")} />
         <span className="ml-2">Alcohol</span>
       </label>
-    </div>
+    </div> */}
 
     {/* User Consent Checkbox */}
     <div className="mb-4">
