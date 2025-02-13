@@ -1,16 +1,16 @@
-// eslint-disable-next-line
-import { useState, useRef } from "react";
+import { useState, useRef, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Webcam from "react-webcam";
 import { UserContext } from "./UserContext";
-import { useContext, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCamera, faUpload, faRefresh } from "@fortawesome/free-solid-svg-icons";
+
 
 export default function ImageCaptureScreen({ images, setImages }) {
   // eslint-disable-next-line
   const { userData } = useContext(UserContext);
   const navigate = useNavigate();
   const webcamRef = useRef(null);
-  const [uploadingSection, setUploadingSection] = useState(null);
 
   const sections = [
     "Labial Mucosa",
@@ -21,153 +21,187 @@ export default function ImageCaptureScreen({ images, setImages }) {
     "Floor of Mouth",
   ];
 
-  useEffect(() => {
-    navigator.permissions
-      .query({ name: "camera" })
-      .then((result) => {
-        console.log("Camera permission state:", result.state);
-        if (result.state === "denied") {
-          alert(
-            "Camera permission is denied. Please allow it in your browser settings."
-          );
-        }
-      })
-      .catch((error) => console.error("Permission query error:", error));
+  const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
+  const [facingMode, setFacingMode] = useState("user");
+  const [cameraAccess, setCameraAccess] = useState(null);
+  const [showInstructions, setShowInstructions] = useState(true);
 
-    navigator.mediaDevices
-      .getUserMedia({ video: true })
-      .then((stream) => {
-        console.log("Camera access granted!", stream);
-      })
-      .catch((error) => {
-        console.error("Camera access denied:", error);
-        alert(`Camera access denied: ${error.message}`);
-      });
+  useEffect(() => {
+    checkCameraAccess();
   }, []);
 
-  const requestCameraAccess = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: true,
-      });
-      console.log("Camera access granted!", stream);
-      alert("Camera access granted!");
-    } catch (error) {
-      console.error("Camera access denied:", error);
-      alert(`Error: ${error.message}`);
+  const checkCameraAccess = () => {
+    navigator.mediaDevices
+      .getUserMedia({ video: true })
+      .then(() => setCameraAccess(true))
+      .catch(() => setCameraAccess(false));
+  };
+
+  const captureImage = () => {
+    if (webcamRef.current) {
+      const imageSrc = webcamRef.current.getScreenshot();
+      setImages((prev) => ({ ...prev, [sections[currentSectionIndex]]: imageSrc }));
     }
   };
 
-  const captureImage = (section) => {
-    const imageSrc = webcamRef.current.getScreenshot();
-    setImages((prev) => ({ ...prev, [section]: imageSrc }));
-  };
-
-  const handleImageUpload = (event, section) => {
+  const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImages((prev) => ({ ...prev, [section]: reader.result }));
+        setImages((prev) => ({ ...prev, [sections[currentSectionIndex]]: reader.result }));
       };
       reader.readAsDataURL(file);
     }
   };
 
+  const nextSection = () => {
+    setCurrentSectionIndex((prev) => Math.min(prev + 1, sections.length - 1));
+  };
+
+  const prevSection = () => {
+    setCurrentSectionIndex((prev) => Math.max(prev - 1, 0));
+  };
+
+  const toggleCamera = () => {
+    setFacingMode((prev) => (prev === "user" ? "environment" : "user"));
+  };
+
   return (
-    <div
-  className="min-h-screen flex flex-col items-center justify-center bg-blue-100 bg-repeat"
-  style={{
-    backgroundImage:
-      "url('https://thumbs.dreamstime.com/b/dentist-orthodontics-blue-seamless-pattern-line-icons-dental-care-medical-equipment-braces-tooth-prosthesis-floss-caries-120849082.jpg')",
-    backgroundSize: "350px 350px",
-  }}
->
-  <div className="bg-white bg-opacity-90 p-8 rounded-lg shadow-xl text-center w-full max-w-lg">
-    <h2 className="text-3xl font-bold mb-4 text-[#2189c6]">
-      Capture or Upload Oral Image
-    </h2>
+    <div className="p-6 bg-gray-100 min-h-screen flex flex-col items-center relative">
+      {/* Instructions Popup */}
+      {showInstructions && (
+        <div className="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg max-w-md text-center shadow-lg">
+            <h2 className="text-2xl font-bold text-blue-700 mb-2">Instructions</h2>
 
-    {/* AI Tips Section */}
-    <div className="mb-4 p-3 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 w-full text-center rounded-lg">
-      <p className="text-sm font-semibold">
-        AI Tips: Ensure proper lighting and image clarity for best results.
-      </p>
-    </div>
+            <ul className="text-gray-700 list-disc list-inside text-start">
+  <li>Capture clear images of different oral sections.</li>
+  <li>Use switch button to toggle between cameras.</li>
+  <li>Ensure good lighting for better accuracy.</li>
+</ul>
 
-    {/* Request Camera Access Button */}
-    <button
-      onClick={requestCameraAccess}
-      className="px-6 py-3 bg-red-500 text-white rounded-lg text-lg shadow-lg transition transform hover:scale-105 mb-4"
-    >
-      Request Camera Access
-    </button>
+               <br/>
 
-    {/* Webcam Component */}
-    <Webcam
-      ref={webcamRef}
-      screenshotFormat="image/jpeg"
-      className="w-80 h-80 border rounded-lg shadow-lg mb-4"
-      videoConstraints={{ facingMode: "user" }}
-      onUserMediaError={(err) => console.error("Webcam error:", err)}
-    />
-
-    {/* Image Capture & Upload Options */}
-    <div className="grid grid-cols-2 gap-4">
-      {sections.map((section) => (
-        <div
-          key={section}
-          className="p-4 bg-white bg-opacity-90 border rounded-lg shadow-lg text-center"
-        >
-          <p className="font-semibold text-[#2189c6]">{section}</p>
-
-          {images[section] ? (
-            <img
-              src={images[section]}
-              alt={section}
-              className="w-20 h-20 mx-auto mt-2 rounded border"
-            />
-          ) : (
-            <>
-              <button
-                className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg shadow-lg transition transform hover:scale-105"
-                onClick={() => captureImage(section)}
-              >
-                Take a Photo
-              </button>
-              <label className="mt-2 block text-sm text-gray-700 cursor-pointer">
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={(event) => handleImageUpload(event, section)}
-                />
-                <span className="px-4 py-2 bg-gray-500 text-white rounded-lg shadow-lg transition transform hover:scale-105">
-                  Upload from Gallery
-                </span>
-              </label>
-            </>
-          )}
+            <button
+              className="mt-4 bg-blue-500 text-white px-5 py-2 rounded-lg hover:bg-blue-600"
+              onClick={() => setShowInstructions(false)}
+            >
+              Got It!
+            </button>
+          </div>
         </div>
-      ))}
+      )}
+
+      {/* Title */}
+      <h1 className="text-3xl font-bold text-blue-700 mb-4 text-center">
+        Capture Oral Images
+      </h1>
+
+      {/* Progress Indicator */}
+      <p className="text-md font-semibold text-gray-600 mt-3">
+        Sections : {currentSectionIndex+1} / {sections.length}
+      </p>
+
+      {/* Section Name */}
+      <h2 className="text-2xl font-bold my-4 text-blue-600 text-center">
+        {sections[currentSectionIndex]} Capture
+      </h2>
+
+      {/* Request Camera Access Button */}
+      {cameraAccess === false && (
+        <button
+          className="bg-red-500 text-white px-5 py-2 rounded-lg shadow hover:bg-red-600 mb-4"
+          onClick={checkCameraAccess}
+        >
+          Request Camera Access
+        </button>
+      )}
+{/* Left Arrow (Previous Section) */}
+{currentSectionIndex > 0 && (
+          <button
+            className="absolute left-3 top-1/2 transform -translate-y-24 bg-gray-800 text-white p-5 rounded-full z-40 hover:bg-gray-900 shadow-lg"
+            onClick={prevSection}
+          >
+            ◀
+          </button>
+        )}
+      {/* Camera Frame with Navigation Arrows */}
+      <div className="relative w-80 h-96 bg-black rounded-lg shadow-lg overflow-hidden flex items-center justify-center">
+
+
+        {/* Camera Feed */}
+        {cameraAccess ? (
+          <Webcam
+            ref={webcamRef}
+            screenshotFormat="image/jpeg"
+            className="absolute inset-0 w-full h-full object-cover"
+            videoConstraints={{ facingMode }}
+          />
+        ) : (
+          <p className="text-red-500 font-semibold mt-4">Camera access required!</p>
+        )}
+
+        {/* Right Arrow (Next Section) */}
+
+      </div>
+      {currentSectionIndex < sections.length - 1 && (
+          <button
+            className="absolute right-1 top-1/2 transform -translate-y-24 bg-gray-800 text-white p-5 rounded-full  z-40 hover:bg-gray-900 shadow-lg"
+            onClick={nextSection}
+          >
+            ▶
+          </button>
+        )}
+      {/* Controls */}
+      <div className="mt-4 flex items-center gap-6">
+        <button
+          className="p-4 px-6 bg-green-600 text-white rounded-full shadow-lg text-2xl hover:bg-green-600"
+          onClick={captureImage}
+          disabled={!cameraAccess}
+        >
+          <FontAwesomeIcon icon={faCamera} className="text-white text-2xl" />
+
+        </button>
+        <label className="cursor-pointer p-4 px-6 bg-gray-500 text-white rounded-full shadow-lg text-2xl hover:bg-gray-600">
+          <FontAwesomeIcon icon={faUpload} className="text-white text-2xl" />
+
+          <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
+        </label>
+        <button
+          className="p-4 px-6 bg-yellow-500 text-white rounded-full shadow-lg text-2xl hover:bg-yellow-600"
+          onClick={toggleCamera}
+          disabled={!cameraAccess}
+        >
+          <FontAwesomeIcon icon={faRefresh} className="text-white text-2xl" />
+        </button>
+      </div>
+
+      {/* Captured Images with Section Number Overlay */}
+      <div className="mt-6 w-full max-w-md overflow-x-auto whitespace-nowrap flex space-x-3 p-2 bg-white rounded-lg shadow-md">
+        {Object.keys(images).length > 0 ? (
+          Object.keys(images).map((section, index) => (
+            <div key={section} className="relative w-24 h-24 flex-shrink-0 border rounded-lg overflow-hidden shadow">
+              <img src={images[section]} alt={section} className="w-full h-full object-cover" />
+              <div className="absolute top-0 left-0 bg-black bg-opacity-60 text-white text-xs px-2 py-1 rounded-br-lg">
+                Section {index + 1}
+              </div>
+            </div>
+          ))
+        ) : (
+          <p className="text-gray-500">No images captured yet.</p>
+        )}
+      </div>
+
+      {/* Navigation Buttons */}
+      <div className="mt-6 flex space-x-4">
+        <button
+          className="bg-indigo-500 text-white px-5 py-2 rounded-lg shadow hover:bg-indigo-600"
+          onClick={() => navigate("/review")}
+        >
+          Review Images
+        </button>
+      </div>
     </div>
-
-    {/* Placeholder for future Adjust & Crop feature */}
-    <button
-      className="bg-purple-500 text-white px-6 py-3 mt-4 rounded-lg shadow-lg transition transform hover:scale-105"
-      onClick={() => alert("Adjust & Crop feature coming soon!")}
-    >
-      Adjust & Crop
-    </button>
-
-    {/* Navigate to Review Images */}
-    <button
-      className="bg-green-500 text-white px-6 py-3 mt-6 rounded-lg shadow-lg transition transform hover:scale-105"
-      onClick={() => navigate("/review")}
-    >
-      Review Images
-    </button>
-  </div>
-</div>
   );
 }

@@ -12,7 +12,7 @@ export default function RegistrationScreen() {
   const handleChange = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
-
+// eslint-disable-next-line
   const handleCheckbox = (habit) => {
     setUserData((prev) => ({
       ...prev,
