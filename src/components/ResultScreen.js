@@ -16,7 +16,7 @@ const ResultsScreen = ({ user = {} }) => {
     probabilityScore: "78%",
     areaAffected: "Lower Left Molar",
     severity: "Moderate",
-    recommendedAction: "See a Specialist",
+    recommendedAction: "Consultation with specialist",
   };
 
   // Ensure user properties are always defined
@@ -83,7 +83,7 @@ const generatePDF = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-2xl shadow-lg max-w-md w-full text-center">
+      <div className="bg-white p-8 rounded-2xl shadow-lg max-w-md text-center w-80">
         <h2 className="text-2xl font-bold text-gray-800 mb-4">Assessment Results</h2>
 
         <div className="text-left space-y-2">
