@@ -29,7 +29,7 @@ export default function HomeScreen() {
   ></div>
 
   {/* Overlay to avoid blur cutoff */}
-  <div className="absolute inset-0 bg-white bg-opacity-30"></div>
+  {/* <div className="absolute inset-0 bg-white bg-opacity-30"></div> */}
 
   {/* Main Content */}
   <div className="relative z-10 bg-white bg-opacity-90 p-8 rounded-lg shadow-xl text-center">

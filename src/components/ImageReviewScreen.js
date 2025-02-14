@@ -91,12 +91,19 @@ export default function ImageReviewScreen({ images, setImages }) {
   };
 
   return (
-    <div className="p-3 bg-gray-100 min-h-screen flex flex-col justify-center items-center" style={{
+    <div className="p-3 bg-gray-100 min-h-screen flex flex-col justify-center items-center relative">
+  {/* Blurred Background */}
+  <div
+    className="absolute inset-0 bg-cover bg-center blur-[1px]"
+    style={{
       backgroundImage:
         "url('https://thumbs.dreamstime.com/b/dentist-orthodontics-blue-seamless-pattern-line-icons-dental-care-medical-equipment-braces-tooth-prosthesis-floss-caries-120849082.jpg')",
-      backgroundSize:"350px 350px",
-    }}>
-  <div className="py-6 px-2 bg-white shadow-lg rounded-lg w-full max-w-4xl text-center bg-opacity-90">
+      backgroundSize: "350px 350px",
+    }}
+  ></div>
+
+  {/* Content */}
+  <div className="relative py-6 px-2 bg-white shadow-lg rounded-lg w-full max-w-4xl text-center bg-opacity-90">
     <h2 className="text-2xl font-bold mb-4 text-center">Captured Images</h2>
 
     {loading ? (
@@ -142,10 +149,10 @@ export default function ImageReviewScreen({ images, setImages }) {
         </div>
       </div>
     ) : (
-      <div className="w-full overflow-x-auto whitespace-nowrap py-4 ">
+      <div className="w-full overflow-x-auto whitespace-nowrap py-4">
         <div className="flex space-x-4">
           {sections.map((section) => (
-            <div key={section} className="bg-white border rounded shadow-lg text-center flex-shrink-0 w-80 relative p- ">
+            <div key={section} className="bg-white border rounded shadow-lg text-center flex-shrink-0 w-80 relative">
               <p className="font-semibold p-2 bg-gray-200 rounded-t-lg">{section}</p>
               <div className="relative">
                 <img src={images[section]} alt={section} className="w-full mx-auto rounded border" />
@@ -169,5 +176,6 @@ export default function ImageReviewScreen({ images, setImages }) {
     )}
   </div>
 </div>
+
   );
 }

@@ -24,14 +24,20 @@ export default function RegistrationScreen() {
 
   return (
     <div
-  className="h-screen flex flex-col items-center justify-center bg-blue-100 bg-repeat"
-  style={{
-    backgroundImage:
-      "url('https://thumbs.dreamstime.com/b/dentist-orthodontics-blue-seamless-pattern-line-icons-dental-care-medical-equipment-braces-tooth-prosthesis-floss-caries-120849082.jpg')",
-    backgroundSize: "350px 350px",
-  }}
+  className="h-screen flex flex-col items-center justify-center bg-blue-100 bg-repeat relative"
 >
-  <div className="bg-white bg-opacity-90 p-8 rounded-lg shadow-xl text-center w-80">
+  {/* Blurred Background */}
+  <div
+    className="absolute inset-0 bg-cover bg-center filter blur-[1px]"
+    style={{
+      backgroundImage:
+        "url('https://thumbs.dreamstime.com/b/dentist-orthodontics-blue-seamless-pattern-line-icons-dental-care-medical-equipment-braces-tooth-prosthesis-floss-caries-120849082.jpg')",
+      backgroundSize: "350px 350px",
+    }}
+  ></div>
+
+  {/* Content */}
+  <div className="relative bg-white bg-opacity-90 p-8 rounded-lg shadow-xl text-center w-80">
     <h2 className="text-2xl font-bold mb-4 text-[#2189c6]">Patient Registration</h2>
 
     <input
@@ -75,7 +81,9 @@ export default function RegistrationScreen() {
     </div>
 
     <button
-      className={`w-full px-4 py-3 rounded-lg text-white text-lg shadow-lg transition transform hover:scale-105 ${consent ? 'bg-[#2189c6] hover:bg-blue-700' : 'bg-gray-400 cursor-not-allowed'}`}
+      className={`w-full px-4 py-3 rounded-lg text-white text-lg shadow-lg transition transform hover:scale-105 ${
+        consent ? "bg-[#2189c6] hover:bg-blue-700" : "bg-gray-400 cursor-not-allowed"
+      }`}
       onClick={() => navigate("/capture")}
       disabled={!consent}
     >
@@ -83,6 +91,7 @@ export default function RegistrationScreen() {
     </button>
   </div>
 </div>
+
 
 
   );

@@ -82,54 +82,62 @@ const generatePDF = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100" style={{
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 relative">
+  {/* Blurred Background */}
+  <div
+    className="absolute inset-0 bg-cover bg-center blur-[1px]"
+    style={{
       backgroundImage:
         "url('https://thumbs.dreamstime.com/b/dentist-orthodontics-blue-seamless-pattern-line-icons-dental-care-medical-equipment-braces-tooth-prosthesis-floss-caries-120849082.jpg')",
-      backgroundSize:"350px 350px",
-    }}>
-      <div className="bg-white p-8 rounded-2xl shadow-lg max-w-md text-center w-80 bg-opacity-90">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">Assessment Results</h2>
-        <hr className="my-2 border-gray-400" />
+      backgroundSize: "350px 350px",
+    }}
+  ></div>
 
-        <div className="text-left space-y-2">
-          <p><strong>Name:</strong> {userData.name || "Test User"}</p>
-          <p><strong>Age:</strong> {userData.age || "25"}</p>
-          <p><strong>Gender:</strong> {userData.gender || "Male"}</p>
-          <hr className="my-4 border-gray-200" />
-          <p><strong>Lesion Type:</strong> {result.lesionType}</p>
-          <p><strong>Probability Score:</strong> {result.probabilityScore}</p>
-          <p><strong>Area Affected:</strong> {result.areaAffected}</p>
-          <p><strong>Severity Level:</strong> {result.severity}</p>
-          <p><strong>Recommended Actions:</strong> {result.recommendedAction}</p>
-        </div>
+  {/* Content */}
+  <div className="relative bg-white p-8 rounded-2xl shadow-lg max-w-md text-center w-80 bg-opacity-90">
+    <h2 className="text-2xl font-bold text-gray-800 mb-4">Assessment Results</h2>
+    <hr className="my-2 border-gray-400" />
 
-        <div className="mt-6 flex flex-col space-y-3">
-        <button
-            onClick={handleDownloadReport}
-            className="flex items-center justify-center bg-[#2189c6] hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md"
-          >
-            <DownloadCloud className="w-5 h-5 mr-2" />
-            Download Report
-          </button>
-
-          <button
-            onClick={() => alert("Redirecting to appointment page...")}
-            className="flex items-center justify-center bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md"
-          >
-            <Calendar className="w-5 h-5 mr-2" />
-            Schedule an Appointment
-          </button>
-
-          <button
-            onClick={handleShareReport}
-            className="flex items-center justify-center bg-indigo-500 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md"
-          >
-            <Share2 className="w-5 h-5 mr-2" />
-            Share Report
-          </button>
-        </div>
-      </div>
+    <div className="text-left space-y-2">
+      <p><strong>Name:</strong> {userData.name || "Test User"}</p>
+      <p><strong>Age:</strong> {userData.age || "25"}</p>
+      <p><strong>Gender:</strong> {userData.gender || "Male"}</p>
+      <hr className="my-4 border-gray-200" />
+      <p><strong>Lesion Type:</strong> {result.lesionType}</p>
+      <p><strong>Probability Score:</strong> {result.probabilityScore}</p>
+      <p><strong>Area Affected:</strong> {result.areaAffected}</p>
+      <p><strong>Severity Level:</strong> {result.severity}</p>
+      <p><strong>Recommended Actions:</strong> {result.recommendedAction}</p>
     </div>
+
+    <div className="mt-6 flex flex-col space-y-3">
+      <button
+        onClick={handleDownloadReport}
+        className="flex items-center justify-center bg-[#2189c6] hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md"
+      >
+        <DownloadCloud className="w-5 h-5 mr-2" />
+        Download Report
+      </button>
+
+      <button
+        onClick={() => alert("Redirecting to appointment page...")}
+        className="flex items-center justify-center bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md"
+      >
+        <Calendar className="w-5 h-5 mr-2" />
+        Schedule an Appointment
+      </button>
+
+      <button
+        onClick={handleShareReport}
+        className="flex items-center justify-center bg-indigo-500 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md"
+      >
+        <Share2 className="w-5 h-5 mr-2" />
+        Share Report
+      </button>
+    </div>
+  </div>
+</div>
+
   );
 };
 
