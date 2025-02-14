@@ -16,64 +16,73 @@ export default function HomeScreen() {
   ];
 
   return (
-    <div
-      className="h-screen flex flex-col items-center justify-center bg-blue-100 bg-repeat"
-      style={{
-        backgroundImage:
-          "url('https://thumbs.dreamstime.com/b/dentist-orthodontics-blue-seamless-pattern-line-icons-dental-care-medical-equipment-braces-tooth-prosthesis-floss-caries-120849082.jpg')",
-        backgroundSize: "350px 350px",
-      }}
-    >
-      <div className="bg-white bg-opacity-90 p-8 rounded-lg shadow-xl text-center">
-        <h1 className="text-3xl font-bold mb-2 text-[#2189c6]">ORCAI App</h1>
-        <h3 className="text-2xl font-semibold mb-6 text-[#2189c6]">
-          AI-Based Oral Screening
-        </h3>
+    <div className="relative h-screen flex flex-col items-center justify-center bg-blue-100">
+  {/* Blurred Background */}
+  <div
+    className="absolute inset-0 bg-cover bg-center"
+    style={{
+      backgroundImage:
+        "url('https://thumbs.dreamstime.com/b/dentist-orthodontics-blue-seamless-pattern-line-icons-dental-care-medical-equipment-braces-tooth-prosthesis-floss-caries-120849082.jpg')",
+      backgroundSize: "350px 350px",
+      filter: "blur(10px)", // ✅ Correct way to blur
+    }}
+  ></div>
 
-        <div className="mt-6 flex flex-col space-y-4 w-64">
-          <button
-            className="px-6 py-3 bg-[#2189c6] text-white rounded-lg text-lg shadow-lg transition transform hover:scale-105"
-            onClick={() => navigate("/register")}
-          >
-            Scan Now
-          </button>
+  {/* Overlay to avoid blur cutoff */}
+  <div className="absolute inset-0 bg-white bg-opacity-30"></div>
 
-          <button
-            className="px-6 py-3 bg-purple-800 bg-opacity-80 text-white rounded-lg text-lg shadow-lg transition transform hover:scale-105"
-            onClick={() => setShowModal(true)}
-          >
-            Guidelines
-          </button>
-        </div>
-      </div>
+  {/* Main Content */}
+  <div className="relative z-10 bg-white bg-opacity-90 p-8 rounded-lg shadow-xl text-center">
+    <h1 className="text-3xl font-bold mb-2 text-[#2189c6]">ORCAI App</h1>
+    <h3 className="text-2xl font-semibold mb-6 text-[#2189c6]">
+      AI-Based Oral Screening
+    </h3>
 
-      {/* Modal */}
-      {showModal && (
-        <div className="fixed inset-0 flex items-end justify-center bg-black bg-opacity-50 backdrop-blur-sm">
-          <div className="bg-white w-full max-w-md rounded-t-3xl bg-opacity-90 p-6 shadow-lg transition-transform transform translate-y-0">
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-semibold text-[#2189c6]"> Guidelines</h2>
-              <button onClick={() => setShowModal(false)} className="text-gray-500 hover:text-gray-700">
-                <FontAwesomeIcon icon={faTimes} className="text-2xl" />
-              </button>
-            </div>
-            <ul className="mt-4 space-y-3">
-              {guidelines.map((guide, index) => (
-                <li key={index} className="flex items-center gap-3 text-gray-700">
-                  {guide.icon}
-                  {guide.text}
-                </li>
-              ))}
-            </ul>
-            <button
-              className="mt-6 w-full bg-[#2189c6] text-white py-2 rounded-lg shadow-lg hover:bg-blue-700"
-              onClick={() => setShowModal(false)}
-            >
-              Got it!
-            </button>
-          </div>
-        </div>
-      )}
+    <div className="mt-6 flex flex-col space-y-4 w-64">
+      <button
+        className="px-6 py-3 bg-[#2189c6] text-white rounded-lg text-lg shadow-lg transition transform hover:scale-105"
+        onClick={() => navigate("/register")}
+      >
+        Scan Now
+      </button>
+
+      <button
+        className="px-6 py-3 bg-purple-800 bg-opacity-80 text-white rounded-lg text-lg shadow-lg transition transform hover:scale-105"
+        onClick={() => setShowModal(true)}
+      >
+        Guidelines
+      </button>
     </div>
+  </div>
+
+  {/* Modal */}
+  {showModal && (
+    <div className="fixed inset-0 flex items-end justify-center bg-black bg-opacity-50 backdrop-blur-md">
+      <div className="bg-white w-full max-w-md rounded-t-3xl bg-opacity-90 p-6 shadow-lg transition-transform transform translate-y-0">
+        <div className="flex justify-between items-center">
+          <h2 className="text-2xl font-semibold text-[#2189c6]"> Guidelines</h2>
+          <button onClick={() => setShowModal(false)} className="text-gray-500 hover:text-gray-700">
+            <FontAwesomeIcon icon={faTimes} className="text-2xl" />
+          </button>
+        </div>
+        <ul className="mt-4 space-y-3">
+          {guidelines.map((guide, index) => (
+            <li key={index} className="flex items-center gap-3 text-gray-700">
+              {guide.icon}
+              {guide.text}
+            </li>
+          ))}
+        </ul>
+        <button
+          className="mt-6 w-full bg-[#2189c6] text-white py-2 rounded-lg shadow-lg hover:bg-blue-700"
+          onClick={() => setShowModal(false)}
+        >
+          Got it!
+        </button>
+      </div>
+    </div>
+  )}
+</div>
+
   );
 }
