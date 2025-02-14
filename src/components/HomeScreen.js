@@ -24,7 +24,7 @@ export default function HomeScreen() {
       backgroundImage:
         "url('https://thumbs.dreamstime.com/b/dentist-orthodontics-blue-seamless-pattern-line-icons-dental-care-medical-equipment-braces-tooth-prosthesis-floss-caries-120849082.jpg')",
       backgroundSize: "350px 350px",
-      filter: "blur(10px)", // ✅ Correct way to blur
+      filter: "blur(1px)", // ✅ Correct way to blur
     }}
   ></div>
 
