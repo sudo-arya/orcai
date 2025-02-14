@@ -84,7 +84,7 @@ export default function ImageCaptureScreen({ images, setImages }) {
                <br/>
 
             <button
-              className="mt-4 bg-blue-500 text-white px-5 py-2 rounded-lg hover:bg-blue-600"
+              className="mt-4 bg-blue-500 text-white px-7 py-2 text-lg rounded-lg hover:bg-blue-600"
               onClick={() => setShowInstructions(false)}
             >
               Got It!
