@@ -28,17 +28,14 @@ export default function HomeScreen() {
     }}
   ></div>
 
-  {/* Overlay to avoid blur cutoff */}
-  {/* <div className="absolute inset-0 bg-white bg-opacity-30"></div> */}
-
   {/* Main Content */}
   <div className="relative z-10 bg-white bg-opacity-90 p-8 rounded-lg shadow-xl text-center">
     <h1 className="text-3xl font-bold mb-2 text-[#2189c6]">ORCAI App</h1>
-    <h3 className="text-2xl font-semibold mb-6 text-[#2189c6]">
-      AI-Based Oral Screening
+    <h3 className="text-xl font-semibold mb-4 text-[#2189c6]">
+      (AI-Based Oral Screening)
     </h3>
 
-    <div className="mt-6 flex flex-col space-y-4 w-64">
+    <div className="mt-6 flex flex-col space-y-3 w-72">
       <button
         className="px-6 py-3 bg-[#2189c6] text-white rounded-lg text-lg shadow-lg transition transform hover:scale-105"
         onClick={() => navigate("/register")}
@@ -52,7 +49,11 @@ export default function HomeScreen() {
       >
         Guidelines
       </button>
+
     </div>
+    <div className=" text-gray-600 text-base mt-6 ">
+    Powered by <span className="font-semibold text-[#2189c6]">KlusterMedAi</span>
+  </div>
   </div>
 
   {/* Modal */}
@@ -82,7 +83,11 @@ export default function HomeScreen() {
       </div>
     </div>
   )}
+
+  {/* Powered by KlusterMedAi */}
+
 </div>
+
 
   );
 }
