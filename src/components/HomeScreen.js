@@ -57,7 +57,7 @@ export default function HomeScreen() {
 
   {/* Modal */}
   {showModal && (
-    <div className="fixed inset-0 flex items-end justify-center bg-black bg-opacity-50 backdrop-blur-md">
+    <div className="fixed inset-0 flex z-20 items-end justify-center bg-black bg-opacity-50 backdrop-blur-md">
       <div className="bg-white w-full max-w-md rounded-t-3xl bg-opacity-90 p-6 shadow-lg transition-transform transform translate-y-0">
         <div className="flex justify-between items-center">
           <h2 className="text-2xl font-semibold text-[#2189c6]"> Guidelines</h2>
