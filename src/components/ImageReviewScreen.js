@@ -107,12 +107,12 @@ export default function ImageReviewScreen({ images, setImages }) {
     <h2 className="text-2xl font-bold mb-4 text-center">Captured Images</h2>
 
     {loading ? (
-      <div className="text-center p-6 bg-white rounded-lg shadow-lg">
+      <div className="text-center p-6 bg-white rounded-lg bg-opacity-0">
         <p className="text-lg font-semibold">{uploadStatus}</p>
         <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mt-4"></div>
       </div>
     ) : analyzing ? (
-      <div className="text-center p-6 bg-white rounded-lg shadow-lg">
+      <div className="text-center p-6 bg-white rounded-lg bg-opacity-0">
         <p className="text-lg font-semibold">🔍 Analyzing using AI...</p>
         <div className="w-12 h-12 border-4 border-green-500 border-t-transparent rounded-full animate-spin mx-auto mt-4"></div>
       </div>
